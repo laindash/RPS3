@@ -24,6 +24,17 @@ namespace RPS3
             left_border_in.KeyPress += left_border_in_KeyPress;
             right_border_in.KeyPress += right_border_in_KeyPress;
             step_in.KeyPress += step_in_KeyPress;
+
+            a_in.Text = "0";
+            b_in.Text = "1";
+            c_in.Text = "5";
+            d_in.Text = "0";
+            left_border_in.Text = "1";
+            right_border_in.Text = "5";
+            step_in.Text = "1";
+
+            double a = 0, b = 1, c = 5, d = 0, left_border = 1, right_border = 5, step = 1;
+            Algorithm.StartAlgorithm(a, b, c, d, left_border, right_border, step, result_panel, chart, false);
         }
 
 
@@ -316,11 +327,25 @@ namespace RPS3
                     {
                         // Получение пути к выбранному файлу
                         string file_path = saveFileDialog.FileName;
-
                         // Запись данных в файл
                         File.WriteAllText(file_path, save_data);
                         MessageBox.Show($"Данные успешно сохранены в файл {file_path}.", "Сохранение", 
                             MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
+                    }
+                    saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Текстовые файлы (*.png)|*.png|Все файлы (*.*)|*.*";
+                    saveFileDialog.FilterIndex = 1;
+                    saveFileDialog.RestoreDirectory = true;
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        // Получение пути к выбранному файлу
+                        string file_path = saveFileDialog.FileName;
+                        // Запись данных в файл
+
+                        this.chart.SaveImage(file_path, System.Drawing.Imaging.ImageFormat.Png);
+                        MessageBox.Show($"Данные успешно сохранены в файл {file_path}.", "Сохранение",
+                            MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                     }
                 }
