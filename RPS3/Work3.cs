@@ -13,9 +13,14 @@ namespace RPS3
 
             // Запретить открытие на полный экран
             MaximizeBox = false;
-            MessageBox.Show(GetHello(), "Приветствие", 
-                MessageBoxButtons.OK, 
-                MessageBoxIcon.Information);
+            if (CheckTheLoad())
+            {
+                MessageBox.Show(GetHello(), "Приветствие",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                checkerHello.Checked = true;
+            }
+            else checkerHello.Checked = false;
 
             a_in.KeyPress += a_in_KeyPress;
             b_in.KeyPress += b_in_KeyPress;
@@ -37,12 +42,27 @@ namespace RPS3
             Algorithm.StartAlgorithm(a, b, c, d, left_border, right_border, step, result_panel, chart, false);
         }
 
+        public static bool CheckTheLoad()
+        {
+            return Convert.ToBoolean(File.ReadAllText(Path.Combine(Application.StartupPath, "check_hello.txt")));
+        }
+        public static void ChangeCheckBoxValue(Work3 mw)
+        {
+            if (mw.checkerHello.Checked == true)
+            {
+                File.WriteAllText(Path.Combine(Application.StartupPath, "check_hello.txt"), true.ToString());
+            }
+            if (mw.checkerHello.Checked == false)
+            {
+                File.WriteAllText(Path.Combine(Application.StartupPath, "check_hello.txt"), false.ToString());
+            }
+        }
 
         public static string GetHello()
         {
-            string hello = "Егорова Ксения гр.425" + Environment.NewLine +
-            "Контрольная работа номер 3" + Environment.NewLine +
-            "Вариант 5" + Environment.NewLine +
+            string hello = "Семенков Даниил гр.425" + Environment.NewLine +
+            "Контрольная работа № 3" + Environment.NewLine +
+            "Вариант 19" + Environment.NewLine +
             "Построение графика синусоиды y = a + b * sin(c * x + d).";
             return hello;
         }
@@ -441,6 +461,11 @@ namespace RPS3
                 e.Handled = true;
                 return;
             }
+        }
+
+        private void checkerHello_Click(object sender, EventArgs e)
+        {
+            ChangeCheckBoxValue(this);
         }
     }
 }
